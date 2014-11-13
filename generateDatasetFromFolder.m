@@ -3,8 +3,8 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
 %   [ dataset ] = generateDatasetFromFolder( folder_path) reads images from
 %   folder_path and store them in the dataset cell.
 
-    % list all czi files in the path folder
-    file_information = dir([folder_path '*.czi']); 
+    % list all files from the folder_path
+    file_information = rdir(folder_path); 
     file_name = {file_information.name};
 
     % count number of images in the folder
@@ -15,7 +15,7 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
     
     % read each image file
     for i=1:nb_file
-        file_path = [folder_path file_name{i}];
+        file_path = [file_name{i}];
         % open image file using Bio-Formats library
         bfImage = bfopen(file_path);
         % metadata from ZEISS
