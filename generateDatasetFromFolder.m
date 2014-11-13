@@ -18,20 +18,22 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
         file_path = [file_name{i}];
         % open image file using Bio-Formats library
         bfImage = bfopen(file_path);
-        % metadata from ZEISS
-        metadata = bfImage{1, 2};
-        [acquisition_time, channel_name] = parseCziMetadata(metadata);
+        
+        % read metadata from Bio-Formats
+        omeMeta = bfImage{1, 4};
+        nb_channel = omeMeta.getChannelCount(0);
         
         % add metadata to dataset
         dataset{i}.file_path = file_path;
-        dataset{i}.acquisition_time = acquisition_time;
-        dataset{i}.channel_name = channel_name;
+        dataset{i}.acquisition_date = omeMeta.getImageAcquisitionDate(0).getValue();
         
-        nb_channel = length(channel_name);
-        channel{nb_channel} = 0;
+        channel_name{nb_channel} = 0;
         for j=1:nb_channel
             dataset{i}.channel{j} = bfImage{1,1}{j};
+            channel_name{j} = char(omeMeta.getChannelName(0,(j-1)));
         end
+        dataset{i}.channel_name = channel_name;
+        
     end
 end
 
