@@ -27,7 +27,7 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
         dataset{i}.file_path = file_path;
         dataset{i}.acquisition_date = omeMeta.getImageAcquisitionDate(0).getValue();
         
-        channel_name{nb_channel} = 0;
+        channel_name = cell(1,nb_channel);
         for j=1:nb_channel
             dataset{i}.channel{j} = bfImage{1,1}{j};
             channel_name{j} = char(omeMeta.getChannelName(0,(j-1)));
