@@ -13,13 +13,10 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
     % pre-allocate the cell
     dataset{nb_file} = struct();
     
-    % open image file using Bio-Formats library
-    addpath ./lib/bfmatlab
-
-    
     % read each image file
     for i=1:nb_file
         file_path = [folder_path file_name{i}];
+        % open image file using Bio-Formats library
         bfImage = bfopen(file_path);
         % metadata from ZEISS
         metadata = bfImage{1, 2};
@@ -35,28 +32,6 @@ function [ dataset ] = generateDatasetFromFolder( folder_path )
         for j=1:nb_channel
             dataset{i}.channel{j} = bfImage{1,1}{j};
         end
-
-        
-%         % Find channels
-% 
-%         originalImages = struct('channel1', bfImage{1,1}{1}, ...
-%                                 'channel2', bfImage{1,1}{2}, ...
-%                                 'channel3', bfImage{1,1}{3}, ...
-%                                 'channel4', bfImage{1,1}{4});
-% 
-%         dataset(i).original = originalImages;
-% 
-%         % segmentation
-%         binaryImages = struct('channel1', [], ...
-%                               'channel2', [], ...
-%                               'channel3', [], ...
-%                               'channel4', segmentationphasecontrast(originalImages.channel4));
-% 
-%         dataset(i).binary = binaryImages;
-%         
-%         dataset{i}.filepath = [path listFilename{i}];
-%         dataset{i}.channel_names = channelNames;
-
     end
 end
 
